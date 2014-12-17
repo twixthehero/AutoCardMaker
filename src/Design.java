@@ -11,7 +11,7 @@ public class Design implements IDesign
 	protected static Polygon nameArea;
 	protected static Polygon costArea;
 	protected static Polygon imageArea;
-	protected static Polygon textArea;
+	public static Polygon textArea;
 	protected static Polygon statArea;
 	
 	protected int w;
@@ -72,6 +72,13 @@ public class Design implements IDesign
 		drawCost(g, c.getCost());
 		drawStat(g, c.getStat());
 		drawText(g);
+	}
+	
+	@Override
+	public void draw(Graphics2D g, Card c, DescriptionPane dp,
+			FlavorPane fp)
+	{
+		
 	}
 	
 	@Override

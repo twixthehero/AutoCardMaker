@@ -72,11 +72,12 @@ public class StringUtils
 				}
 			}
 			if (pos == -1)
-				pos = guess; // Split in the middle of the word
+				pos = findBreakBefore(line, guess); // wrap the last word to next line
 
+			
 			list.add(line.substring(0, pos).trim());
 			line = line.substring(pos).trim();
-//			System.out.println(list.get(0) + " | " + line);
+			
 			len = line.length();
 		}
 		if (len > 0)

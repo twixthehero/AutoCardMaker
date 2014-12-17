@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -7,6 +8,8 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.text.html.HTMLDocument;
 
 public class Card
 {
@@ -32,6 +35,10 @@ public class Card
 	
 	private BufferedImage image;
 	
+	public static JFrame FRAME = new JFrame();
+	private DescriptionPane dp;
+	private FlavorPane fp;
+	
 	static
 	{
 		sorcery = new BufferedImage[4];
@@ -41,25 +48,25 @@ public class Card
 		
 		try
 		{
-			sorcery[0] = ImageIO.read(new File("images/sorcery/Red_Sorcery.png"));
-			sorcery[1] = ImageIO.read(new File("images/sorcery/Green_Sorcery.png"));
-			sorcery[2] = ImageIO.read(new File("images/sorcery/Blue_Sorcery.png"));
-			sorcery[3] = ImageIO.read(new File("images/sorcery/White_Sorcery.png"));
+			sorcery[0] = ImageIO.read(new File("images/Sorcery/Red_Sorcery.png"));
+			sorcery[1] = ImageIO.read(new File("images/Sorcery/Green_Sorcery.png"));
+			sorcery[2] = ImageIO.read(new File("images/Sorcery/Blue_Sorcery.png"));
+			sorcery[3] = ImageIO.read(new File("images/Sorcery/White_Sorcery.png"));
 			
-			creature[0] = ImageIO.read(new File("images/creature/Red_Creature.png"));
-			creature[1] = ImageIO.read(new File("images/creature/Green_Creature.png"));
-			creature[2] = ImageIO.read(new File("images/creature/Blue_Creature.png"));
-			creature[3] = ImageIO.read(new File("images/creature/White_Creature.png"));
+			creature[0] = ImageIO.read(new File("images/Creature/Red_Creature.png"));
+			creature[1] = ImageIO.read(new File("images/Creature/Green_Creature.png"));
+			creature[2] = ImageIO.read(new File("images/Creature/Blue_Creature.png"));
+			creature[3] = ImageIO.read(new File("images/Creature/White_Creature.png"));
 			
-			instant[0] = ImageIO.read(new File("images/instant/Red_Instant.png"));
-			instant[1] = ImageIO.read(new File("images/instant/Green_Instant.png"));
-			instant[2] = ImageIO.read(new File("images/instant/Blue_Instant.png"));
-			instant[3] = ImageIO.read(new File("images/instant/White_Instant.png"));
+			instant[0] = ImageIO.read(new File("images/Instant/Red_Instant.png"));
+			instant[1] = ImageIO.read(new File("images/Instant/Green_Instant.png"));
+			instant[2] = ImageIO.read(new File("images/Instant/Blue_Instant.png"));
+			instant[3] = ImageIO.read(new File("images/Instant/White_Instant.png"));
 			
-//			training[0] = ImageIO.read(new File("images/training/Red_Training.png"));
-//			training[1] = ImageIO.read(new File("images/training/Green_Training.png"));
-//			training[2] = ImageIO.read(new File("images/training/Blue_Training.png"));
-//			training[3] = ImageIO.read(new File("images/training/White_Training.png"));
+			training[0] = ImageIO.read(new File("images/Training/Red_Training.png"));
+			training[1] = ImageIO.read(new File("images/Training/Green_Training.png"));
+			training[2] = ImageIO.read(new File("images/Training/Blue_Training.png"));
+			training[3] = ImageIO.read(new File("images/Training/White_Training.png"));
 		}
 		catch (IOException e)
 		{
@@ -75,7 +82,23 @@ public class Card
 		this.flavor = flavor;
 		this.stat = stat;
 		
-		//loadImage();
+//		dp = new DescriptionPane(description, Card.w, Card.h / 3 - 45);
+//		fp = new FlavorPane(flavor, Card.w - 90, 45);
+//		dp.setBackground(Color.blue);
+//		fp.setBackground(Color.red);
+//		
+//		FRAME.add(dp);
+//		FRAME.add(fp);
+//		
+//		try
+//		{
+//			String bodyRule = "body { font-family: " + Design30_2.iFont.getFamily() + "; " + "font-size: " + Design30_2.iFont.getSize() + "pt; }";
+//			((HTMLDocument)fp.getDocument()).getStyleSheet().addRule(bodyRule);
+//		}
+//		catch (Exception e)
+//		{
+//			e.printStackTrace();
+//		}
 		
 		design = new Design30_2(w, h);
 	}
@@ -148,22 +171,6 @@ public class Card
 		
 		return res;
 	}
-	/*
-	private void loadImage()
-	{
-		File img = new File("images/" + getSaveName() + ".png");
-		//System.out.println(img.getAbsolutePath());
-		
-		try
-		{
-			image = ImageIO.read(img);
-		}
-		catch (IOException e)
-		{
-//			System.err.println("Unable to read image '" + img.getAbsolutePath() + "'.");
-			image = null;
-		}
-	}*/
 	
 	protected void init(Graphics go)
 	{
@@ -174,5 +181,6 @@ public class Card
 	protected void draw(Graphics2D g)
 	{
 		design.draw(g, this);
+//		design.draw(g, this, dp, fp);
 	}
 }

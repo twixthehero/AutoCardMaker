@@ -31,13 +31,14 @@ public class Design30_2 extends Design
 	private int nameAverage;
 	private int statAverage;
 	
-	private static Font font;
-	private static Font iFont;
+	public static Font font = new Font("Dialog", Font.PLAIN, 16);
+	public static Font iFont = font.deriveFont(Font.ITALIC, 12f);
 	private static Color clear = new Color(1f, 1f, 1f, 0f);
 	private static Color gold = new Color(1f, 215 / 255f, 0, 1f);
 	private static Color back = new Color(174 / 255f, 135 / 255f, 99 / 255f, 1f);
 	private static Color border = new Color(138 / 255f, 105 / 255f, 74 / 255f, 1f);
-	private static BasicStroke stroke = new BasicStroke(5);
+	private static int borderSize = 5;
+	private static BasicStroke stroke = new BasicStroke(borderSize);
 	
 	private boolean centered = true;
 	private int descLineCount;
@@ -112,7 +113,10 @@ public class Design30_2 extends Design
 		StringBuilder sb = new StringBuilder(description);
 		
 		if (font == null)
+		{
 			font = g.getFont().deriveFont(16f);
+			System.out.println(font.getFamily());
+		}
 		
 		g.setFont(font);
 		FontMetrics fm = g.getFontMetrics();
@@ -125,19 +129,23 @@ public class Design30_2 extends Design
 			String n = StringUtils.wrap(sb.toString(), fm, width).get(0);
 			pieces.add(n);
 			sb = new StringBuilder(sb.substring(pieces.get(pieces.size() - 1).length()).trim());
-//			System.out.println(width + " | '" + sb.toString() + "'");
 			descLineCount++;
 			
 			if (descLineCount > lineMax)
 				width -= widthMod;
 		}
 		
+		/*************************
+		 * FLAVOR TEXT
+		 *************************/
+		
 		if (iFont == null)
-			iFont = g.getFont().deriveFont(Font.ITALIC, 16f);
+			iFont = g.getFont().deriveFont(Font.ITALIC, 12f);
 		
 		g.setFont(iFont);
 		fm = g.getFontMetrics();
 		sb = new StringBuilder(flavor);
+		width = w - 90 - borderSize * 2;
 		
 		while (sb.length() != 0)
 		{
@@ -165,6 +173,22 @@ public class Design30_2 extends Design
 		drawName(g, c.getName());
 		drawCost(g, c.getCost());
 		drawStat(g, c.getStat());
+		drawText(g);
+	}
+	
+	@Override
+	public void draw(Graphics2D g, Card c, DescriptionPane dp,
+			FlavorPane fp)
+	{
+		g.setColor(back);
+		g.fillRect(0, 0, w, h);
+
+		drawImage(g, c.getImage());
+		drawName(g, c.getName());
+		drawCost(g, c.getCost());
+		drawStat(g, c.getStat());
+		dp.paint(g);
+		fp.paint(g);
 		drawText(g);
 	}
 	
@@ -290,8 +314,6 @@ public class Design30_2 extends Design
 		
 		if (stat.toString().equals("I"))
 			g.drawString(stat.toString(), statArea.xpoints[0] + 10, statAverage + 5);
-//		else if (stat.toString().equals("S"))
-//			g.drawString(stat.toString(), statArea.xpoints[0], statAverage + 5);
 		else
 			g.drawString(stat.toString(), statArea.xpoints[0] + 5, statAverage + 5);
 	}
@@ -310,99 +332,26 @@ public class Design30_2 extends Design
 		if (pieces == null || flavorPieces == null) return;
 		
 		int y = h / 3 * 2 + 15;
-		drawX = 5;
-		lineIndex = 0;
 		
-		if (pieces.size() + flavorPieces.size() + 1 < 7) //center the text
+		y = textArea.ypoints[1] + (textArea.ypoints[2] - textArea.ypoints[1]) / 2;
+		y -= (17 * pieces.size()) / 2;
+		
+		for (int i = 0; i < pieces.size(); i++)
 		{
-			y = textArea.ypoints[1] + (textArea.ypoints[2] - textArea.ypoints[1]) / 2;
-//			System.out.println(y);
-			y -= (17 * (pieces.size() + flavorPieces.size())) / 2;
-//			System.out.println(y);
-			
-			for (int i = 0; i < pieces.size(); i++)
-			{
-				g.drawString(pieces.get(i), drawX, y);
-				y += 17;
-				lineIndex++;
-				
-				if (lineIndex > lineMax)
-					drawX += widthMod;
-			}
-			
+			g.drawString(pieces.get(i), 5, y);
 			y += 17;
-			g.setFont(iFont);
-			
-			for (int i = 0; i < flavorPieces.size(); i++)
-			{
-				g.drawString(flavorPieces.get(i), drawX, y);
-				y += 17;
-				lineIndex++;
-				
-				if (lineIndex > lineMax)
-					drawX += widthMod;
-			}
 		}
-		else if (pieces.size() + flavorPieces.size() + 1 < 10) //gap between flavor and desc
+		
+		//flavor text
+		if (flavorPieces.isEmpty()) return;
+		
+		g.setFont(iFont);
+		y = h - borderSize;
+		
+		for (int i = flavorPieces.size() - 1; i >= 0; i--)
 		{
-			for (int i = 0; i < pieces.size(); i++)
-			{
-				g.drawString(pieces.get(i), drawX, y);
-				y += 17;
-				lineIndex++;
-				
-				if (lineIndex > lineMax)
-					drawX += widthMod;
-			}
-			
-			y += 17;
-			g.setFont(iFont);
-			
-			for (int i = 0; i < flavorPieces.size(); i++)
-			{
-				g.drawString(flavorPieces.get(i), drawX, y);
-				y += 17;
-				lineIndex++;
-				
-				if (lineIndex > lineMax)
-					drawX += widthMod;
-			}
-		}
-		else if (pieces.size() + flavorPieces.size() < 10) //no gap between flavor and desc
-		{
-			for (int i = 0; i < pieces.size(); i++)
-			{
-				g.drawString(pieces.get(i), drawX, y);
-				y += 17;
-				lineIndex++;
-				
-				if (lineIndex > lineMax)
-					drawX += widthMod;
-			}
-			
-			g.setFont(iFont);
-			
-			for (int i = 0; i < flavorPieces.size(); i++)
-			{
-				g.drawString(flavorPieces.get(i), drawX, y);
-				y += 17;
-				lineIndex++;
-				
-				if (lineIndex > lineMax)
-					drawX += widthMod;
-			}
-		}
-		else //dont draw the flavor text
-		{
-			for (int i = 0; i < pieces.size(); i++)
-			{
-				g.drawString(pieces.get(i), drawX, y);
-				y += 17;
-				lineIndex++;
-				
-				if (lineIndex > lineMax)
-					drawX += widthMod;
-			}
+			g.drawString(flavorPieces.get(i), 91, y);
+			y -= 13;
 		}
 	}
 	
@@ -413,6 +362,6 @@ public class Design30_2 extends Design
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setStroke(stroke);
 		g2.drawPolygon(imageArea);
-		g2.drawImage(image, 0, 0, null);
+		g2.drawImage(image, Card.w / 2 - image.getWidth() / 2, imageArea.ypoints[0] + (imageArea.ypoints[2] - imageArea.ypoints[1]) / 2 - image.getHeight() / 2, null);
 	}
 }

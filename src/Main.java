@@ -14,7 +14,7 @@ public class Main extends JFrame
 	{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1280, 720);
-		setTitle("Inter-Magicka Card Maker");
+		setTitle("InterMagicka Card Maker");
 		
 		cp = new CardPanel();
 		JScrollPane jsp = new JScrollPane(cp);

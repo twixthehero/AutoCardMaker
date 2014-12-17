@@ -24,7 +24,7 @@ public class CardPanel extends JPanel
 	 */
 	private static final long serialVersionUID = -1444286701144383767L;
 	
-	private static final int rowSize = 5;
+	private static final int rowSize = 4;
 	
 	private ArrayList<Card> cardList;
 	
@@ -78,12 +78,12 @@ public class CardPanel extends JPanel
 							String[] piece = stat.getStringCellValue().split("/");
 							s = new Stat(EStat.Stats, Integer.parseInt(piece[0]), Integer.parseInt(piece[1]));
 						}
-						
+												
 						cardList.add(new Card(name.getStringCellValue(), cst, desc.getStringCellValue(), flav.getStringCellValue(), s));
 					}
 					catch (Exception e)
 					{
-//						e.printStackTrace();
+						e.printStackTrace();
 					}
 				}
 			}
@@ -97,6 +97,10 @@ public class CardPanel extends JPanel
 		int h = (cardList.size() / rowSize + 1) * Card.h;
 		setSize(w, h);
 		setPreferredSize(new Dimension(w, h));
+		
+		//TODO
+		Card.FRAME.setSize(w, h);
+		Card.FRAME.pack();
 	}
 	
 	protected void init()

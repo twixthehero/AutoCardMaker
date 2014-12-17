@@ -6,6 +6,7 @@ public interface IDesign
 	void initAreas();
 	void calcStrings(Graphics2D g, String description, String flavor);
 	void draw(Graphics2D g, Card c);
+	void draw(Graphics2D g, Card c, DescriptionPane dp, FlavorPane fp);
 	void drawName(Graphics2D g, String name);
 	void drawCost(Graphics2D g, Cost cost);
 	void drawImage(Graphics2D g, BufferedImage image);
